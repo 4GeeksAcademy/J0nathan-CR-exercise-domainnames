@@ -1,38 +1,39 @@
 import "bootstrap";
 import "./style.css";
 
-
 window.onload = function () {
-  let pronoun = ['the', 'our'];
-  let adj = ['great', 'big'];
-  let noun = ['jogger', 'racoon'];
-  let domain = ['.com', '.es', '.net'];
+  let pronoun = ["the", "our"];
+  let adj = ["great", "big"];
+  let noun = ["jogger", "racoon"];
+  let domain = [".com", ".es", ".net"];
 
-  let randomDomains = generateRandomDomains(8)
-
-  function getRandomElement(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
-
-  function generateRandomDomains(howMany) {
-    let domains = [];
-
-    for (let i = 0; i < howMany; i++) {
-      let pronounRandom = getRandomElement(pronoun);
-      let adjRandom = getRandomElement(adj);
-      let nounRandom = getRandomElement(noun);
-      let domainRandom = getRandomElement(domain);
-
-      domains.push(pronounRandom + adjRandom + nounRandom + domainRandom);
+  function generateAllDomains() {
+    let all = [];
+    for (let p of pronoun) {
+      for (let a of adj) {
+        for (let n of noun) {
+          for (let d of domain) {
+            all.push(p + a + n + d);
+          }
+        }
+      }
     }
-
-    return domains;
+    return all;
   }
 
-  document.getElementById("content").innerHTML = randomDomains;
+  function shuffle(arr) {
+    return arr.sort(() => Math.random() - 0.5);
+  }
+
+  let randomDomains = shuffle(generateAllDomains());
+
+  document.getElementById("content").innerHTML = randomDomains
+    .map((dom, i) => `${i + 1}. ${dom}`)
+    .join("<br>");
+
   document.getElementById("reloadBtn").addEventListener("click", function () {
-  location.reload();
-});
+    location.reload();
+  });
 
   console.log(randomDomains);
 };
